@@ -13,10 +13,10 @@ const Hero = () => {
         loop
         playsInline
       >
-        {/* <source
+        <source
           src="https://assets.gymshark.com/wl6q2in9o7k3/4tW92Wk1DrDUNX7UM3hImP/d0cd5c8bf7e174d7c64a01dc7f52a80f/SEASONAL_LIFTING_FEMALE_8x3_BANNER_EVERYDAY_SEAMLESS.mp4"
           type="video/mp4"
-        /> */}
+        />
       </video>
 
       {/* Overlay Content */}

@@ -6,7 +6,7 @@ import Hero2 from "./components/Hero2";
 export default function Home() {
   return (
     <div className="">
-      <Nav/>
+      {/* <Nav/> */}
       <Hero/>
       <Hero2/>
     </div>

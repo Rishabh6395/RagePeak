@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/app/context/AuthContext"; 
 import { authClient } from "@/app/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,19 +16,43 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { redirect } from "next/navigation";
+import { Router } from "next/router";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  async function handleSubmit() {
-    const { data, error } = await authClient.signUp.email({
-      name: name, 
-      email: email, 
-      password: password, 
-      callbackURL: "/dashboard",
-    });
+  const { login } = useAuth(); 
+  
+const router = useRouter();
+  async function handleSubmit(e: any) {
+    e.preventDefault()
+    await authClient.signUp.email(
+      {
+        name: name,
+        email: email,
+        password: password,
+        callbackURL: "/",
+      },
+      {
+        onRequest: (ctx) => {
+          
+        },
+        onSuccess: (ctx) => {
+          login();
+          // localStorage.setItem("token", data.token);
+          router.push('/')
+        },
+        onError: (ctx) => {
+          console.log("err", ctx);
+          alert(`Error: ${ctx}`)
+        },
+      },
+    );
   }
 
   return (
@@ -39,8 +64,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
-          <FieldGroup onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <FieldGroup>
             <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
               <Input
@@ -69,23 +94,14 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" required />
-              <FieldDescription>
-                Must be at least 8 characters long.
-              </FieldDescription>
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="confirm-password">
-                Confirm Password
-              </FieldLabel>
-              <Input
-                id="confirm-password"
+              <Input id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <FieldDescription>Please confirm your password.</FieldDescription>
+                required />
+              <FieldDescription>
+                Must be at least 8 characters long.
+              </FieldDescription>
             </Field>
             <FieldGroup>
               <Field>

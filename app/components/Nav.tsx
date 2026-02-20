@@ -2,8 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "../context/AuthContext";
 
 const Nav = () => {
+  const { user, logout } = useAuth();
   return (
     <div className="flex items-center justify-between bg-black text-white px-8 py-6 sticky top-0 z-50">
       {/* Left navigation links */}
@@ -21,9 +23,9 @@ const Nav = () => {
 
       {/* Centered Logo */}
       <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
-        <Link href={'/'}>
+        <Link href={"/"}>
           <Image src="/logo.png" alt="Logo" width={180} height={30} priority />
-        </Link>  
+        </Link>
       </div>
 
       {/* Right section with icons */}
@@ -72,7 +74,54 @@ const Nav = () => {
             </svg>
           </div>
         </Link>
-        <Link href={"/api/auth/signup"}>
+
+        {user ? (
+          // Logged in: show profile icon linking to profile page + logout
+          <div className="flex items-center gap-4">
+            <Link href={"/api/auth/profile"}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                />
+              </svg>
+            </Link>
+            <button
+              onClick={logout}
+              className="text-sm text-zinc-400 hover:text-white"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          // Not logged in: show signup/login link
+          <Link href={"/api/auth/signup"}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+          </Link>
+        )}
+
+        {/* <Link href={"/api/auth/signup"}>
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +138,7 @@ const Nav = () => {
               />
             </svg>
           </div>
-        </Link>
+        </Link> */}
         <Link href={"/cart"}>
           <div>
             <svg

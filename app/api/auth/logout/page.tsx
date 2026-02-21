@@ -1,9 +1,20 @@
-import React from 'react'
+import { authClient } from '@/app/lib/auth-client'
+import { redirect } from 'next/navigation'
+
 
 const SignOut = () => {
+  async function handleLogout() {
+        await authClient.signOut({
+          fetchOptions: {
+            onSuccess:() => {
+              redirect('/signin')
+            },
+          },
+        });
+      }
   return (
     <div>
-      This is Logout
+      <button onClick={handleLogout}>Logout</button>
     </div>
   )
 }

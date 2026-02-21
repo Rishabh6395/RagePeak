@@ -2,6 +2,7 @@
 import { useAuth } from "@/app/context/AuthContext"; 
 import { authClient } from "@/app/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -110,7 +111,7 @@ const router = useRouter();
                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
+                  Already have an account?  <Link href="/api/auth/signin">Sign in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

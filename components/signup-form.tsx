@@ -56,6 +56,13 @@ const router = useRouter();
     );
   }
 
+  const handelGoogleSignUp = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+    console.log("data: ",data)
+  }
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -107,7 +114,7 @@ const router = useRouter();
             <FieldGroup>
               <Field>
                 <Button type="submit">Create Account</Button>
-                <Button variant="outline" type="button">
+                <Button variant="outline" type="button" onClick={handelGoogleSignUp}>
                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">

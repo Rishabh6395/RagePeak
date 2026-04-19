@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/app/lib/auth-client";
 import { useRouter } from "next/navigation";
+import SearchBar from "./SearchBar";
 
 const Nav = () => {
   const { data: session } = authClient.useSession(); 
@@ -19,6 +20,24 @@ const Nav = () => {
       },
     });
   };
+
+  // creating search functioality 
+
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+
+  const handleSeach = async (value: string | '')=> {
+    setQuery(value);
+    if(!value){
+      setResults([])
+      return;
+    }
+
+    const result = await fetch(`/api/search?q=${value}`);
+    const data = await result.json();
+    setResults(data)
+  }
+
 
   return (
     <div className="flex items-center justify-between bg-black text-white px-8 py-6 sticky top-0 z-50">
@@ -39,18 +58,21 @@ const Nav = () => {
       {/* Right section */}
       <div className="flex items-center gap-6">
         {/* Search */}
-        <div className="relative">
+        {/* <div className="relative">
           <input
             type="text"
             placeholder="What are you looking for today..."
             className="h-9 w-[15rem] text-sm text-zinc-700 bg-zinc-900 rounded-2xl pl-10 pr-4 text-center"
+            value={query}
+            onChange={(e) => handleSeach(e.target.value)}
           />
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
           </div>
-        </div>
+        </div> */}
+        <SearchBar/>
 
         {/* Favourites */}
         <Link href={"/fav"}>

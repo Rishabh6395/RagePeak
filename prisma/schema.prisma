@@ -72,3 +72,25 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+model Product {
+  id       String  @id @default(cuid())
+  name     String
+  slug     String  @unique
+  price    Float
+  image    String?
+  category String
+  brand    Brand   @relation(fields: [brandId], references: [id])
+  brandId  String
+
+  @@map("product")
+}
+
+model Brand {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  products Product[]
+
+  @@map("brand")
+}
